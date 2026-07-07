@@ -15,14 +15,8 @@ public class DemoApplication {
 
 	private final RestTemplate restTemplate = new RestTemplate();
 
-	@GetMapping("/")
-	public String home() {
-		return "Hello from Railway!!";
-	}
-
 	@GetMapping("/api/weather")
 	public String getWeather(@RequestParam String city) {
-		// Step 1: Turn city name into lat/lon (US only)
 		String geoUrl = "https://geocoding-api.open-meteo.com/v1/search?name="
 				+ city + "&count=1&country=US";
 		String geoResponse = restTemplate.getForObject(geoUrl, String.class);
@@ -35,7 +29,6 @@ public class DemoApplication {
 		double lon = extractNumber(geoResponse, "\"longitude\":");
 		String name = extractName(geoResponse);
 
-		// Step 2: Get current weather for that location
 		String weatherUrl = "https://api.open-meteo.com/v1/forecast?latitude="
 				+ lat + "&longitude=" + lon
 				+ "&current_weather=true&temperature_unit=fahrenheit";
