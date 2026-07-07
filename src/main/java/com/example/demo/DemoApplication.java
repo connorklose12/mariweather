@@ -17,7 +17,7 @@ public class DemoApplication {
 
 	@GetMapping("/")
 	public String home() {
-		return "Hello from Railway!";
+		return "Hello from Railway!!";
 	}
 
 	@GetMapping("/api/weather")
