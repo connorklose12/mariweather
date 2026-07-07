@@ -2,6 +2,50 @@
 <html>
 <head>
   <title>US Weather Search</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 3rem;
+      background: radial-gradient(circle at 30% 20%, #0d1b3d, #030712 70%);
+      color: #e6ecff;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ff2ee6, #22d9ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    input {
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #2b3a67;
+      background: #0f1a3c;
+      color: #e6ecff;
+      width: 260px;
+      outline: none;
+    }
+    input:focus {
+      border-color: #22d9ff;
+      box-shadow: 0 0 8px #22d9ff88;
+    }
+    #result {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      display: inline-block;
+      background: rgba(15, 26, 60, 0.7);
+      border: 1px solid #2b3a67;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #ff2ee633;
+    }
+    #result h2 {
+      color: #22d9ff;
+    }
+  </style>
 </head>
 <body style="font-family: sans-serif; text-align: center; padding: 2rem;">
 
@@ -44,6 +88,7 @@
       resultDiv.innerHTML =
         "<h2>" + city.name + ", " + city.admin1 + "</h2>" +
         "<p>Temperature: " + weather.current_weather.temperature + "°F</p>" +
+        "<p>Real Feel: " + weather.current.apparent_temperature + "°F</p>" +
         "<p>Wind Speed: " + weather.current_weather.windspeed + " mph</p>";
     }
   </script>

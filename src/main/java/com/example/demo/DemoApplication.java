@@ -23,11 +23,11 @@ public class DemoApplication {
 		return restTemplate.getForObject(geoUrl, String.class);
 	}
 
-	@GetMapping("/api/weather")
-	public String getWeather(@RequestParam double lat, @RequestParam double lon) {
-		String weatherUrl = "https://api.open-meteo.com/v1/forecast?latitude="
-				+ lat + "&longitude=" + lon
-				+ "&current_weather=true&temperature_unit=fahrenheit";
-		return restTemplate.getForObject(weatherUrl, String.class);
-	}
+@GetMapping("/api/weather")
+public String getWeather(@RequestParam double lat, @RequestParam double lon) {
+	String weatherUrl = "https://api.open-meteo.com/v1/forecast?latitude="
+			+ lat + "&longitude=" + lon
+			+ "&current_weather=true&current=apparent_temperature&temperature_unit=fahrenheit";
+	return restTemplate.getForObject(weatherUrl, String.class);
+}
 }
