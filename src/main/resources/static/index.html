@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>US Weather Search</title>
+</head>
+<body style="font-family: sans-serif; text-align: center; padding: 2rem;">
+
+  <h1>US City Weather</h1>
+
+  <input id="cityInput" type="text" placeholder="Type any US city..." />
+  <button onclick="getWeather()">Search</button>
+
+  <div id="result" style="margin-top: 1.5rem;"></div>
+
+  <script>
+    async function getWeather() {
+      const city = document.getElementById("cityInput").value;
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerText = "Loading...";
+
+      const res = await fetch("/api/weather?city=" + encodeURIComponent(city));
+      const data = await res.json();
+
+      if (data.error) {
+        resultDiv.innerText = data.error;
+        return;
+      }
+
+      resultDiv.innerHTML =
+        "<h2>" + data.city + "</h2>" +
+        "<p>Temperature: " + data.weather.current_weather.temperature + "°F</p>" +
+        "<p>Wind Speed: " + data.weather.current_weather.windspeed + " mph</p>";
+    }
+  </script>
+
+</body>
+</html>
