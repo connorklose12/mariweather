@@ -50,7 +50,7 @@
 <body style="font-family: sans-serif; text-align: center; padding: 2rem;">
 
   <h1>US City Weather</h1>
-
+<button onclick="getNearMe()">📍 Weather Near Me</button>
   <input id="cityInput" list="cityList" placeholder="Type any US city..." />
   <datalist id="cityList"></datalist>
 
@@ -97,7 +97,19 @@
       weather.daily.temperature_2m_min[i] + "°F</p>";
   }
 
+  
   resultDiv.innerHTML = html;
+}
+
+function getNearMe() {
+  navigator.geolocation.getCurrentPosition(pos => {
+    getWeather({
+      name: "Your Location",
+      admin1: "",
+      latitude: pos.coords.latitude,
+      longitude: pos.coords.longitude
+    });
+  });
 }
   </script>
 
