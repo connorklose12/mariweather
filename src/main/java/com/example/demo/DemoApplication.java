@@ -26,8 +26,8 @@ public class DemoApplication {
 @GetMapping("/api/weather")
 public String getWeather(@RequestParam double lat, @RequestParam double lon) {
 	String weatherUrl = "https://api.open-meteo.com/v1/forecast?latitude="
-			+ lat + "&longitude=" + lon
-			+ "&current_weather=true&current=apparent_temperature&temperature_unit=fahrenheit";
-	return restTemplate.getForObject(weatherUrl, String.class);
+		+ lat + "&longitude=" + lon
+		+ "&current=temperature_2m,apparent_temperature,wind_speed_10m&temperature_unit=fahrenheit";
+    	return restTemplate.getForObject(weatherUrl, String.class);
 }
 }

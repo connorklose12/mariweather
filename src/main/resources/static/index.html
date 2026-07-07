@@ -62,33 +62,35 @@
     const list = document.getElementById("cityList");
     const resultDiv = document.getElementById("result");
 
-   let t;
-input.addEventListener("input", () => {
-  clearTimeout(t);
-  t = setTimeout(async () => {
-    if (input.value.trim().length < 2) return;
-    const res = await fetch("/api/cities?query=" + encodeURIComponent(input.value.trim()));
-    cities = (await res.json()).results || [];
-    list.innerHTML = cities.map(c => `<option value="${c.name}, ${c.admin1 || ""}">`).join("");
-  }, 300);
-});
+    input.addEventListener("input", async () => {
+      const query = input.value.trim();
+      if (query.length < 2) return;
+
+      const res = await fetch("/api/cities?query=" + encodeURIComponent(query));
+      const data = await res.json();
+      cities = data.results || [];
+
+      list.innerHTML = cities.map(c =>
+        `<option value="${c.name}, ${c.admin1 || ""}">`
+      ).join("");
+    });
 
     input.addEventListener("change", () => {
       const match = cities.find(c => `${c.name}, ${c.admin1 || ""}` === input.value);
       if (match) getWeather(match);
     });
 
-    async function getWeather(city) {
-      resultDiv.innerText = "Loading...";
-      const res = await fetch(`/api/weather?lat=${city.latitude}&lon=${city.longitude}`);
-      const weather = await res.json();
+   async function getWeather(city) {
+  resultDiv.innerText = "Loading...";
+  const res = await fetch(`/api/weather?lat=${city.latitude}&lon=${city.longitude}`);
+  const weather = await res.json();
 
-      resultDiv.innerHTML =
-        "<h2>" + city.name + ", " + city.admin1 + "</h2>" +
-        "<p>Temperature: " + weather.current_weather.temperature + "°F</p>" +
-        "<p>Real Feel: " + weather.current.apparent_temperature + "°F</p>" +
-        "<p>Wind Speed: " + weather.current_weather.windspeed + " mph</p>";
-    }
+  resultDiv.innerHTML =
+    "<h2>" + city.name + ", " + city.admin1 + "</h2>" +
+    "<p>Temperature: " + weather.current.temperature_2m + "°F</p>" +
+    "<p>Real Feel: " + weather.current.apparent_temperature + "°F</p>" +
+    "<p>Wind Speed: " + weather.current.wind_speed_10m + " mph</p>";
+}
   </script>
 
 </body>
