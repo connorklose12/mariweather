@@ -7,29 +7,44 @@
 
   <h1>US City Weather</h1>
 
-  <input id="cityInput" type="text" placeholder="Type any US city..." />
-  <button onclick="getWeather()">Search</button>
+  <input id="cityInput" list="cityList" placeholder="Type any US city..." />
+  <datalist id="cityList"></datalist>
 
   <div id="result" style="margin-top: 1.5rem;"></div>
 
   <script>
-    async function getWeather() {
-      const city = document.getElementById("cityInput").value;
-      const resultDiv = document.getElementById("result");
-      resultDiv.innerText = "Loading...";
+    let cities = [];
+    const input = document.getElementById("cityInput");
+    const list = document.getElementById("cityList");
+    const resultDiv = document.getElementById("result");
 
-      const res = await fetch("/api/weather?city=" + encodeURIComponent(city));
+    input.addEventListener("input", async () => {
+      const query = input.value.trim();
+      if (query.length < 2) return;
+
+      const res = await fetch("/api/cities?query=" + encodeURIComponent(query));
       const data = await res.json();
+      cities = data.results || [];
 
-      if (data.error) {
-        resultDiv.innerText = data.error;
-        return;
-      }
+      list.innerHTML = cities.map(c =>
+        `<option value="${c.name}, ${c.admin1 || ""}">`
+      ).join("");
+    });
+
+    input.addEventListener("change", () => {
+      const match = cities.find(c => `${c.name}, ${c.admin1 || ""}` === input.value);
+      if (match) getWeather(match);
+    });
+
+    async function getWeather(city) {
+      resultDiv.innerText = "Loading...";
+      const res = await fetch(`/api/weather?lat=${city.latitude}&lon=${city.longitude}`);
+      const weather = await res.json();
 
       resultDiv.innerHTML =
-        "<h2>" + data.city + "</h2>" +
-        "<p>Temperature: " + data.weather.current_weather.temperature + "°F</p>" +
-        "<p>Wind Speed: " + data.weather.current_weather.windspeed + " mph</p>";
+        "<h2>" + city.name + ", " + city.admin1 + "</h2>" +
+        "<p>Temperature: " + weather.current_weather.temperature + "°F</p>" +
+        "<p>Wind Speed: " + weather.current_weather.windspeed + " mph</p>";
     }
   </script>
 
