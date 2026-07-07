@@ -5,6 +5,7 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/api")
+//the main Java file
 public class WeatherController {
 
     private final RestTemplate restTemplate = new RestTemplate();
