@@ -62,18 +62,16 @@
     const list = document.getElementById("cityList");
     const resultDiv = document.getElementById("result");
 
-    input.addEventListener("input", async () => {
-      const query = input.value.trim();
-      if (query.length < 2) return;
-
-      const res = await fetch("/api/cities?query=" + encodeURIComponent(query));
-      const data = await res.json();
-      cities = data.results || [];
-
-      list.innerHTML = cities.map(c =>
-        `<option value="${c.name}, ${c.admin1 || ""}">`
-      ).join("");
-    });
+   let t;
+input.addEventListener("input", () => {
+  clearTimeout(t);
+  t = setTimeout(async () => {
+    if (input.value.trim().length < 2) return;
+    const res = await fetch("/api/cities?query=" + encodeURIComponent(input.value.trim()));
+    cities = (await res.json()).results || [];
+    list.innerHTML = cities.map(c => `<option value="${c.name}, ${c.admin1 || ""}">`).join("");
+  }, 300);
+});
 
     input.addEventListener("change", () => {
       const match = cities.find(c => `${c.name}, ${c.admin1 || ""}` === input.value);
