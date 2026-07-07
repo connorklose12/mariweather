@@ -27,7 +27,10 @@ public class DemoApplication {
 public String getWeather(@RequestParam double lat, @RequestParam double lon) {
 	String weatherUrl = "https://api.open-meteo.com/v1/forecast?latitude="
 		+ lat + "&longitude=" + lon
-		+ "&current=temperature_2m,apparent_temperature,wind_speed_10m&temperature_unit=fahrenheit";
-    	return restTemplate.getForObject(weatherUrl, String.class);
-}
+		+ "&current=temperature_2m,apparent_temperature,wind_speed_10m"
+		+ "&daily=temperature_2m_max,temperature_2m_min"
+		+ "&temperature_unit=fahrenheit&timezone=auto";
+        return restTemplate.getForObject(weatherUrl, String.class);
+
+  }
 }
